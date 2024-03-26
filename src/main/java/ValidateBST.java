@@ -5,6 +5,24 @@ public class ValidateBST {
         return isValidBST(root, new HashSet<>(), new HashSet<>());
     }
 
+    /**
+     * General idea:
+     * Traverse the tree from root to leaf node recursively, adding the parent node
+     * into either the left or right set.
+     * For a tree such as:
+     *          5
+     *       /    \
+     *      3      8
+     *    /  \   /  \
+     *  1    4  6   9
+     *  When evaluating the subtree at 8, add 5 to the right hashset.
+     *  Thus, when we evaluate the node 6, we know that 6 is
+     *  a right descendant of 5 and a left descendant of 8.
+     * @param root the root of this subtree
+     * @param leftDescendantOf this subtree is a left descendant of every node in this hashset
+     * @param rightDescendantOf this subtree is a right descendant of every node in this hashset
+     * @return true if the tree is a valid BST, false otherwise.
+     */
     private boolean isValidBST(TreeNode root, HashSet<Integer> leftDescendantOf, HashSet<Integer> rightDescendantOf) {
         if (root == null) {
             return true;
@@ -31,6 +49,9 @@ public class ValidateBST {
         return false;
     }
 
+    /**
+     * Checks if a value is less than all elements in the set.
+     */
     private boolean validLeftDescendant(int val, HashSet<Integer> leftDescendantOf) {
         for (int parentVal : leftDescendantOf) {
             if (val >= parentVal) {
@@ -40,6 +61,9 @@ public class ValidateBST {
         return true;
     }
 
+    /**
+     * Checks if a value is greater than all elements in the set.
+     */
     private boolean validRightDescendant(int val, HashSet<Integer> rightDescendantOf) {
         for (int parentVal : rightDescendantOf) {
             if (val <= parentVal) {
@@ -48,6 +72,10 @@ public class ValidateBST {
         }
         return true;
     }
+
+    /***********************************************************************************
+     *                                  TEST CASES
+     ***********************************************************************************/
 
     /**
      * Generate a tree that looks like:
@@ -148,15 +176,11 @@ public class ValidateBST {
 
     public static void main(String[] args) {
         ValidateBST bst = new ValidateBST();
-        TreeNode tree = generateTree6();
+        TreeNode tree = generateTree5();
         boolean isValid = bst.isValidBST(tree);
         System.out.println(isValid);
-
-//        HashSet<Integer> leftChildOf = new HashSet<>();
-//        leftChildOf.add(6);
-//        HashSet<Integer> rightChildOf = new HashSet<>();
-//        rightChildOf.add(5);
-//        boolean validDescendant = bst.validRightDescendant(3, rightChildOf) && bst.validLeftDescendant(3, leftChildOf);
-//        System.out.println(validDescendant);
+        tree = generateTree6();
+        isValid = bst.isValidBST(tree);
+        System.out.println(isValid);
     }
 }

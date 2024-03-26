@@ -1,9 +1,22 @@
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * PROMPT:
+ * Given an integer n, return all the structurally unique BST's,
+ * which has exactly n nodes of unique values from 1 to n. Return the answer in any order.
+ * For n=3, result:
+ *  1       1           2          3            3
+ *   \       \         / \        /            /
+ *    3       2       1   3      1            2
+ *   /         \                  \          /
+ *  2           3                  2        1
+ */
 public class UniqueBST {
-    public boolean isSimilarTree(TreeNode n1, TreeNode n2) {
+    /**
+     * Checks if two trees are the same.
+     */
+    private boolean isSimilarTree(TreeNode n1, TreeNode n2) {
         if (n1 == null && n2 == null) {
             return true;
         } else if (n1 != null && n2 != null) {
@@ -17,7 +30,7 @@ public class UniqueBST {
         }
     }
 
-    public TreeNode insertNode(TreeNode current, int val) {
+    private TreeNode insertNode(TreeNode current, int val) {
         if (current == null) {
             return new TreeNode(val);
         }
@@ -29,7 +42,10 @@ public class UniqueBST {
         return current;
     }
 
-    public TreeNode cloneSubtree(TreeNode node) {
+    /**
+     * Given a tree, return an independent copy of it.
+     */
+    private TreeNode cloneSubtree(TreeNode node) {
         if (node == null) return null;
         TreeNode clone = new TreeNode(node.val);
         clone.left = cloneSubtree(node.left);
@@ -37,12 +53,18 @@ public class UniqueBST {
         return clone;
     }
 
+    /**
+     * Main driver method
+     */
     public List<TreeNode> generateTrees(int max) {
         List<TreeNode> myList = new LinkedList<>();
         generateSubtrees(null, max, new HashSet<>(), myList);
         return myList;
     }
 
+    /**
+     * Helper method to generate subtrees
+     */
     private void generateSubtrees(TreeNode node, int max, HashSet<Integer> usedValues, List<TreeNode> myList) {
         for (int i = 1; i <= max; i++) {
             if (!usedValues.contains(i)) {
@@ -56,6 +78,7 @@ public class UniqueBST {
                     continue;
                 }
 
+                // check if this subtree is already included
                 boolean isDuplicate = false;
                 for (TreeNode n : myList) {
                     if (isSimilarTree(n, newNode)) {
@@ -80,36 +103,6 @@ public class UniqueBST {
         for (TreeNode node : myList) {
             System.out.printf("result %d: %s\n" , index++, node.preOrder());
         }
-
-        /* 1
-         *  \
-         *   2
-         *    \
-         *     3
-         */
-
-
-        /*     2
-         *    / \
-         *   1   3
-         */
-
-
-        /*   3
-         *  /
-         * 1
-         *  \
-         *   2
-         */
-
-
-        /*     3
-         *    /
-         *   2
-         *  /
-         * 1
-         */
-
     }
 
     /*
